@@ -90,7 +90,7 @@ async function getProducts(page) {
         const monthIndex = month - 1;
         dateHead.appendChild(document.createTextNode(`${date} ${monthName[monthIndex]} ${year}`));
 
-        await axios.get(`http://localhost:3000/expense/get-expense?page=${page}&&date=${date}&&month=${month}&&year=${year}&&numRows=${numRows}`, { headers: { "Authorization": token } })
+        await axios.get(`http://16.171.5.97:3000/expense/get-expense?page=${page}&&date=${date}&&month=${month}&&year=${year}&&numRows=${numRows}`, { headers: { "Authorization": token } })
             .then(({ data: { response, ...pageData } }) => {
                 expenseDataHandler(response);
                 showPagination(pageData);
@@ -176,7 +176,7 @@ async function getExpenses(e) {
         dateHead.appendChild(document.createTextNode(`${date} ${monthName[month]} ${year}`));
 
         const page = 1;
-        await axios.get(`http://localhost:3000/expense/get-expense?page=${page}&&date=${date}&&month=${month}&&year=${year}&&numRows=${numRows}`, { headers: { "Authorization": token } })
+        await axios.get(`http://16.171.5.97:3000/expense/get-expense?page=${page}&&date=${date}&&month=${month}&&year=${year}&&numRows=${numRows}`, { headers: { "Authorization": token } })
             .then(({ data: { response, ...pageData } }) => {
                 expenseDataHandler(response);
                 showPagination(pageData);
@@ -244,10 +244,10 @@ function logData(record, i) {
             try {
                 let res;
                 if (name === null) {
-                    res = await axios.post(`http://localhost:3000/expense/delete-salary/${id}`, '', { headers: { "Authorization": token } });
+                    res = await axios.post(`http://16.171.5.97:3000/expense/delete-salary/${id}`, '', { headers: { "Authorization": token } });
                 }
                 else {
-                    res = await axios.post(`http://localhost:3000/expense/delete-expense/${id}`, '', { headers: { "Authorization": token } });
+                    res = await axios.post(`http://16.171.5.97:3000/expense/delete-expense/${id}`, '', { headers: { "Authorization": token } });
                 }
                 if (res.data.resData === 'success') {
                     expenseTable.removeChild(tableRow);
@@ -269,7 +269,7 @@ function logData(record, i) {
 window.addEventListener('DOMContentLoaded', async () => {
     try {
         // Every time the server restarts, the backend might not be available, so we are just giving time for backend to start properly
-        const response = await axios.get('http://localhost:3000/purchase/premiumOrNot', { headers: { "Authorization": token } });
+        const response = await axios.get('http://16.171.5.97:3000/purchase/premiumOrNot', { headers: { "Authorization": token } });
         const isPremium = response.data.isPremium;
         if (isPremium === 'true') {
             razorpayBtn.innerHTML = 'Premium User 👑';
@@ -283,7 +283,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
                 e.preventDefault();
                 leaderboardTable.style.visibility = 'visible';
-                const res = await axios.get('http://localhost:3000/premium/getLeaderboard', { headers: { "Authorization": token } });
+                const res = await axios.get('http://16.171.5.97:3000/premium/getLeaderboard', { headers: { "Authorization": token } });
                 const data = res.data.resData;
 
                 leaderboardHeading.appendChild(document.createTextNode('Leaderboard'));
@@ -324,13 +324,13 @@ document.getElementById('razorpayBtn').onclick = async function (e) {
     try {
         e.preventDefault();
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3000/purchase/premiumMembership', { headers: { "Authorization": token } });
+        const response = await axios.get('http://16.171.5.97:3000/purchase/premiumMembership', { headers: { "Authorization": token } });
 
         var options = {
             "key": response.data.key_id,//key id generated from the dashboard
             "order_id": response.data.order.id,//order id for a particular order
             "handler": async function (response) {
-                await axios.post('http://localhost:3000/purchase/updateTransactionStatus', {
+                await axios.post('http://16.171.5.97:3000/purchase/updateTransactionStatus', {
                     order_id: options.order_id,
                     payment_id: response.razorpay_payment_id
                 }, { headers: { "Authorization": token } });
@@ -358,10 +358,10 @@ reportButton.onclick = async (e) => {
     try {
 
         e.preventDefault();
-        const response = await axios.get('http://localhost:3000/purchase/premiumOrNot', { headers: { "Authorization": token } });
+        const response = await axios.get('http://16.171.5.97:3000/purchase/premiumOrNot', { headers: { "Authorization": token } });
         const isPremium = response.data.isPremium;
         if (isPremium === 'true') {
-            await axios.get('http://localhost:3000/users/download', { headers: { "Authorization": token } })
+            await axios.get('http://16.171.5.97:3000/users/download', { headers: { "Authorization": token } })
                 .then((response) => {
                     if (response.status === 200) {
                         // Here the backend will send a download link which as soon as opened will
